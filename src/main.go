@@ -6,16 +6,20 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"strconv"
 )
 
-type SiteConfiguration struct {
-	Url     string
-	Header  string
-	Headers map[string]string
+type Configuration struct {
+	Urls map[string]Scenario
 }
 
-type Configuration struct {
-	Site SiteConfiguration
+type Scenario struct {
+	Url       string
+	Code      string
+	Headers   map[string]string
+	Noheaders map[string]string
+	Body      string
+	Nobody    string
 }
 
 func readConfig(configFile string) Configuration {
@@ -51,20 +55,56 @@ func main() {
 
 	configuration := readConfig(*configFile)
 	if *debug {
-		log.Println("Debug enabled")
-		log.Println("Config read from", *configFile, "file:", configuration.Site.Headers)
+		log.Println("[*] Debug enabled")
+		log.Println("[*] Config read from", *configFile, "file:", configuration.Urls)
 	}
 
-	if *debug {
-		log.Println("Fetching url", configuration.Site.Url)
-	}
-	resp := fetchUrl(configuration.Site.Url)
+	for _, config := range configuration.Urls {
 
-	for config_key, config_value := range configuration.Site.Headers {
-		var found bool = false
-		for resp_key, resp_value := range resp.Header {
-			if strings.EqualFold(config_key, resp_key) {
-				if strings.EqualFold(resp_value[0], config_value) {
+		if *debug {
+			log.Println("[*] Fetching url", config.Url)
+		}
+		resp := fetchUrl(config.Url)
+
+		// code
+		if config.Code != strconv.Itoa(resp.StatusCode) {
+			log.Fatal("Expected status code ", config.Code, " found ", resp.StatusCode)
+		} else {
+			if *debug {
+				log.Println("Code", resp.StatusCode, "match config", config.Code)
+			}
+		}
+
+		// headers
+		for config_key, config_value := range config.Headers {
+			if *debug {
+				log.Println("read config header:", config_key, config_value)
+			}
+			var found bool = false
+			for resp_key, resp_value := range resp.Header {
+				if strings.EqualFold(config_key, resp_key) {
+					if strings.EqualFold(resp_value[0], config_value) {
+						if *debug {
+							log.Println("Header", resp_key, "with value", resp_value[0], "in response match config")
+						}
+						found = true
+						break
+					}
+				}
+			}
+			if !found {
+				log.Fatal(config.Url, ": header '", config_key, "' with value '", config_value, "' was not found in the response", resp)
+			}
+		}
+
+		// noheaders
+		for config_key, config_value := range config.Noheaders {
+			if *debug {
+				log.Println("read config noheader:", config_key, config_value)
+			}
+			var found bool = false
+			for resp_key, resp_value := range resp.Header {
+				if strings.EqualFold(config_key, resp_key) {
 					if *debug {
 						log.Println("Header", resp_key, "with value", resp_value[0], "in response match config")
 					}
@@ -72,10 +112,19 @@ func main() {
 					break
 				}
 			}
+			if found {
+				log.Fatal(config.Url, ": header '", config_key, "' was found in the response", resp)
+			}
 		}
-		if !found {
-			log.Fatal(configuration.Site.Url, ": header '", config_key, "' with value '", config_value, "' was not found in the response")
+
+		// body
+		if config.Body != "" {
+			log.Println("WARNING: 'body' is not yet supported")
 		}
+		if config.Nobody != "" {
+			log.Println("WARNING: 'nobody' is not yet supported")
+		}
+
 	}
 
 	log.Println("All headers with values found")

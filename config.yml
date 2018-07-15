@@ -1,6 +1,14 @@
-site:
-  url: https://www.iroqwa.org/
-  header: Server
-  headers:
-    X-Powered-By: 4.4.4-8+etch2
-    Server: Microsoft-IIS/6.0
+urls:
+  iroqwa_https:
+    url: https://www.iroqwa.org/
+    code: 200
+    headers:
+      X-Powered-By: 4.4.4-8+etch2
+      Server: Microsoft-IIS/6.0
+    noheaders:
+      X-Cache: none
+    body: "<html"
+    nobody: "Hacked"
+  iroqwa_notfound:
+    url: https://www.iroqwa.org/nonexistent
+    code: 404
