@@ -1,0 +1,6 @@
+site:
+  url: https://www.iroqwa.org/
+  header: Server
+  headers:
+    X-Powered-By: 4.4.4-8+etch2
+    Server: Microsoft-IIS/6.0

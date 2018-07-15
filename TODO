@@ -1,0 +1,4 @@
+* Allow check a header absence
+* Add multiples sites in config
+* Add timeout to http client
+* Add custom UA to http client
