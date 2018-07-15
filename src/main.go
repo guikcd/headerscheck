@@ -7,7 +7,10 @@ import (
 	"net/http"
 	"strings"
 	"strconv"
+	"time"
 )
+
+const UserAgent = "Golang HeadersCheck/0.1 (gui@iroqwa.org)"
 
 type Configuration struct {
 	Urls map[string]Scenario
@@ -39,11 +42,18 @@ func readConfig(configFile string) Configuration {
 	return configuration
 }
 
-func fetchUrl(url string) *http.Response {
-	resp, err := http.Get(url)
+func fetchUrl(url string, useragent string) *http.Response {
+
+	c := &http.Client{
+		Timeout: 5 * time.Second,
+	}
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Set("User-Agent", useragent)
+	resp, err := c.Do(req)
 	if err != nil {
 		log.Fatal("Error fetching url: ", err)
 	}
+
 	return resp
 }
 
@@ -51,6 +61,7 @@ func main() {
 
 	debug := flag.Bool("debug", false, "Enable debugging output")
 	configFile := flag.String("config-file", "config", "Config file")
+	userAgent := flag.String("user-agent", UserAgent, "User-Agent used for queries")
 	flag.Parse()
 
 	configuration := readConfig(*configFile)
@@ -64,7 +75,7 @@ func main() {
 		if *debug {
 			log.Println("[*] Fetching url", config.Url)
 		}
-		resp := fetchUrl(config.Url)
+		resp := fetchUrl(config.Url, *userAgent)
 
 		// code
 		if config.Code != strconv.Itoa(resp.StatusCode) {
@@ -127,5 +138,5 @@ func main() {
 
 	}
 
-	log.Println("All headers with values found")
+	log.Println("All scenario executed sucessfully")
 }
