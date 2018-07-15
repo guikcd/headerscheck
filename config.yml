@@ -1,4 +1,9 @@
 urls:
+  iroqwa_http:
+    url: http://www.iroqwa.org/
+    code: 301
+    headers:
+      Location: https://www.iroqwa.org/
   iroqwa_https:
     url: https://www.iroqwa.org/
     code: 200

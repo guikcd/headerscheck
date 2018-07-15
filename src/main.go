@@ -42,14 +42,24 @@ func readConfig(configFile string) Configuration {
 	return configuration
 }
 
-func fetchUrl(url string, useragent string) *http.Response {
+func fetchUrl(url string, useragent string, followRedirect bool) *http.Response {
 
-	c := &http.Client{
+	// return the error, so client won't attempt redirects
+	client := &http.Client{
+	    CheckRedirect: func(req *http.Request, via []*http.Request) error {
+	        return http.ErrUseLastResponse
+	    },
 		Timeout: 5 * time.Second,
 	}
+	if followRedirect {
+		client = &http.Client{
+			Timeout: 5 * time.Second,
+		}
+	}
+
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Set("User-Agent", useragent)
-	resp, err := c.Do(req)
+	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatal("Error fetching url: ", err)
 	}
@@ -62,6 +72,7 @@ func main() {
 	debug := flag.Bool("debug", false, "Enable debugging output")
 	configFile := flag.String("config-file", "config", "Config file")
 	userAgent := flag.String("user-agent", UserAgent, "User-Agent used for queries")
+	followRedirect := flag.Bool("follow-redirect", false, "Follow redirect (http status codes 30X)")
 	flag.Parse()
 
 	configuration := readConfig(*configFile)
@@ -73,13 +84,13 @@ func main() {
 	for _, config := range configuration.Urls {
 
 		if *debug {
-			log.Println("[*] Fetching url", config.Url)
+			log.Println("[*] Fetching url", config.Url, "with UA", *userAgent)
 		}
-		resp := fetchUrl(config.Url, *userAgent)
+		resp := fetchUrl(config.Url, *userAgent, *followRedirect)
 
 		// code
 		if config.Code != strconv.Itoa(resp.StatusCode) {
-			log.Fatal("Expected status code ", config.Code, " found ", resp.StatusCode)
+			log.Fatal("Error: expected status code ", config.Code, " found ", resp.StatusCode)
 		} else {
 			if *debug {
 				log.Println("Code", resp.StatusCode, "match config", config.Code)
@@ -104,7 +115,7 @@ func main() {
 				}
 			}
 			if !found {
-				log.Fatal(config.Url, ": header '", config_key, "' with value '", config_value, "' was not found in the response", resp)
+				log.Fatal("Error", config.Url, ": header '", config_key, "' with value '", config_value, "' was not found in the response", resp)
 			}
 		}
 
@@ -124,7 +135,7 @@ func main() {
 				}
 			}
 			if found {
-				log.Fatal(config.Url, ": header '", config_key, "' was found in the response", resp)
+				log.Fatal("Error", config.Url, ": header '", config_key, "' was found in the response", resp)
 			}
 		}
 
