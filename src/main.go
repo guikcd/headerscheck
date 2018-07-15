@@ -2,15 +2,15 @@ package main
 
 import (
 	"flag"
-	"log"
-	"strings"
-	"net/http"
 	"github.com/spf13/viper"
+	"log"
+	"net/http"
+	"strings"
 )
 
 type SiteConfiguration struct {
-	Url string
-	Header string
+	Url     string
+	Header  string
 	Headers map[string]string
 }
 
@@ -28,9 +28,9 @@ func readConfig(configFile string) Configuration {
 		log.Fatalf("Error reading config file, %s", err)
 	}
 	err := viper.Unmarshal(&configuration)
-    if err != nil {
-        log.Fatalf("Unable to unmarshal config %s", err)
-    }
+	if err != nil {
+		log.Fatalf("Unable to unmarshal config %s", err)
+	}
 
 	return configuration
 }
@@ -50,12 +50,12 @@ func main() {
 	flag.Parse()
 
 	configuration := readConfig(*configFile)
-    if *debug {
+	if *debug {
 		log.Println("Debug enabled")
 		log.Println("Config read from", *configFile, "file:", configuration.Site.Headers)
-    }
+	}
 
-    if *debug {
+	if *debug {
 		log.Println("Fetching url", configuration.Site.Url)
 	}
 	resp := fetchUrl(configuration.Site.Url)
