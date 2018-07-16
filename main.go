@@ -5,8 +5,8 @@ import (
 	"github.com/spf13/viper"
 	"log"
 	"net/http"
-	"strings"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -46,9 +46,9 @@ func fetchUrl(url string, useragent string, followRedirect bool) *http.Response 
 
 	// return the error, so client won't attempt redirects
 	client := &http.Client{
-	    CheckRedirect: func(req *http.Request, via []*http.Request) error {
-	        return http.ErrUseLastResponse
-	    },
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
 		Timeout: 5 * time.Second,
 	}
 	if followRedirect {
