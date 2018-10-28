@@ -10,14 +10,17 @@ import (
 	"time"
 )
 
+// UserAgent The http User-Agent used for testing
 const UserAgent = "Golang HeadersCheck/0.1 (gui@iroqwa.org)"
 
+// Configuration is the mapping of configs containing Scenario
 type Configuration struct {
-	Urls map[string]Scenario
+	URLs map[string]Scenario
 }
 
+// Scenario contain various resource to fetch and verify
 type Scenario struct {
-	Url       string
+	URL       string
 	Code      string
 	Headers   map[string]string
 	Noheaders map[string]string
@@ -42,7 +45,7 @@ func readConfig(configFile string) Configuration {
 	return configuration
 }
 
-func fetchUrl(url string, useragent string, followRedirect bool) *http.Response {
+func fetchURL(url string, useragent string, followRedirect bool) *http.Response {
 
 	// return the error, so client won't attempt redirects
 	client := &http.Client{
@@ -78,15 +81,15 @@ func main() {
 	configuration := readConfig(*configFile)
 	if *debug {
 		log.Println("[*] Debug enabled")
-		log.Println("[*] Config read from", *configFile, "file:", configuration.Urls)
+		log.Println("[*] Config read from", *configFile, "file:", configuration.URLs)
 	}
 
-	for _, config := range configuration.Urls {
+	for _, config := range configuration.URLs {
 
 		if *debug {
-			log.Println("[*] Fetching url", config.Url, "with UA", *userAgent)
+			log.Println("[*] Fetching url", config.URL, "with UA", *userAgent)
 		}
-		resp := fetchUrl(config.Url, *userAgent, *followRedirect)
+		resp := fetchURL(config.URL, *userAgent, *followRedirect)
 
 		// code
 		if config.Code != strconv.Itoa(resp.StatusCode) {
@@ -98,16 +101,16 @@ func main() {
 		}
 
 		// headers
-		for config_key, config_value := range config.Headers {
+		for configKey, configValue := range config.Headers {
 			if *debug {
-				log.Println("read config header:", config_key, config_value)
+				log.Println("read config header:", configKey, configValue)
 			}
-			var found bool = false
-			for resp_key, resp_value := range resp.Header {
-				if strings.EqualFold(config_key, resp_key) {
-					if strings.EqualFold(resp_value[0], config_value) {
+			var found = false
+			for respKey, respValue := range resp.Header {
+				if strings.EqualFold(configKey, respKey) {
+					if strings.EqualFold(respValue[0], configValue) {
 						if *debug {
-							log.Println("Header", resp_key, "with value", resp_value[0], "in response match config")
+							log.Println("Header", respKey, "with value", respValue[0], "in response match config")
 						}
 						found = true
 						break
@@ -115,27 +118,27 @@ func main() {
 				}
 			}
 			if !found {
-				log.Fatal("Error", config.Url, ": header '", config_key, "' with value '", config_value, "' was not found in the response", resp)
+				log.Fatal("Error", config.URL, ": header '", configKey, "' with value '", configValue, "' was not found in the response", resp)
 			}
 		}
 
 		// noheaders
-		for config_key, config_value := range config.Noheaders {
+		for configKey, configValue := range config.Noheaders {
 			if *debug {
-				log.Println("read config noheader:", config_key, config_value)
+				log.Println("read config noheader:", configKey, configValue)
 			}
-			var found bool = false
-			for resp_key, resp_value := range resp.Header {
-				if strings.EqualFold(config_key, resp_key) {
+			var found = false
+			for respKey, respValue := range resp.Header {
+				if strings.EqualFold(configKey, respKey) {
 					if *debug {
-						log.Println("Header", resp_key, "with value", resp_value[0], "in response match config")
+						log.Println("Header", respKey, "with value", respValue[0], "in response match config")
 					}
 					found = true
 					break
 				}
 			}
 			if found {
-				log.Fatal("Error", config.Url, ": header '", config_key, "' was found in the response", resp)
+				log.Fatal("Error", config.URL, ": header '", configKey, "' was found in the response", resp)
 			}
 		}
 
