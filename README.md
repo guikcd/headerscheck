@@ -1,3 +1,7 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/guikcd/headerscheck)](https://goreportcard.com/report/github.com/guikcd/headerscheck)
+
+
+
 Introduction
 ==========
 
