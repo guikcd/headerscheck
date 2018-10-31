@@ -9,7 +9,7 @@ Introduction
 ==========
 
 This is a simple tool in Go to make http requests and except reponse codes, headers or body.
-Please note that this tool is in fact my first Go program i've written only for discovering this language.
+Please note that this tool is in fact my first Go program i've written only for discovering this language :)
 
 Features
 =======
