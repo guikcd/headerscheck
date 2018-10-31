@@ -1,4 +1,8 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/guikcd/headerscheck)](https://goreportcard.com/report/github.com/guikcd/headerscheck)
+[![docker stars](https://img.shields.io/docker/stars/guidelacour/headerscheck.svg)](https://hub.docker.com/r/guidelacour/headerscheck/) [![docker pulls](https://img.shields.io/docker/pulls/guidelacour/headerscheck.svg)](https://hub.docker.com/r/guidelacour/headerscheck/) [![docker automated build](https://img.shields.io/docker/automated/guidelacour/headerscheck.svg)](https://hub.docker.com/r/guidelacour/headerscheck/) [![docker build status](https://img.shields.io/docker/build/guidelacour/headerscheck.svg)](https://hub.docker.com/r/guidelacour/headerscheck/)
+[![layers](https://images.microbadger.com/badges/image/guidelacour/headerscheck.svg)](https://microbadger.com/images/guidelacour/headerscheck "Get your own image badge on microbadger.com") [![version](https://images.microbadger.com/badges/version/guidelacour/headerscheck.svg)](https://microbadger.com/images/guidelacour/headerscheck "Get your own version badge on microbadger.com")
+
+[![Go Report Card](https://goreportcard.com/badge/github.com/guikcd/headerscheck)](https://goreportcard.com/report/github.com/guikcd/headerscheck) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 
 
 
@@ -20,3 +24,10 @@ Features
 * don't follow redirects by default (to test them)
 * override default Go http client User-Agent and timeout
 * debug mode
+
+How to use
+=========
+
+```
+docker run --rm --volume $(pwd)/config.yml:/root/config.yml guidelacour/headerscheck
+```
