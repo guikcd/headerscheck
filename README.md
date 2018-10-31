@@ -1,4 +1,4 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/guikcd/headerscheck)](https://goreportcard.com/report/github.com/guikcd/headerscheck)
+[![Go Report Card](https://goreportcard.com/badge/github.com/guikcd/headerscheck)](https://goreportcard.com/report/github.com/guikcd/headerscheck) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 
 
