@@ -1,3 +1,5 @@
+[![Actions Status](https://github.com/guikcd/headerscheck/workflows/Go/badge.svg)](https://github.com/guikcd/headerscheck/actions)
+
 [![docker stars](https://img.shields.io/docker/stars/guidelacour/headerscheck.svg)](https://hub.docker.com/r/guidelacour/headerscheck/) [![docker pulls](https://img.shields.io/docker/pulls/guidelacour/headerscheck.svg)](https://hub.docker.com/r/guidelacour/headerscheck/) [![docker automated build](https://img.shields.io/docker/automated/guidelacour/headerscheck.svg)](https://hub.docker.com/r/guidelacour/headerscheck/) [![docker build status](https://img.shields.io/docker/build/guidelacour/headerscheck.svg)](https://hub.docker.com/r/guidelacour/headerscheck/)
 [![layers](https://images.microbadger.com/badges/image/guidelacour/headerscheck.svg)](https://microbadger.com/images/guidelacour/headerscheck "Get your own image badge on microbadger.com") [![version](https://images.microbadger.com/badges/version/guidelacour/headerscheck.svg)](https://microbadger.com/images/guidelacour/headerscheck "Get your own version badge on microbadger.com")
 
