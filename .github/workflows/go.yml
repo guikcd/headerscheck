@@ -3,7 +3,7 @@ on: [push]
 jobs:
 
   build:
-    name: Build
+    name: Build & test
     runs-on: ubuntu-latest
     steps:
 
@@ -28,4 +28,4 @@ jobs:
       run: go build -v .
 
     - name: Test
-      run: ./headerscheck
+      run: ./headerscheck -debug
