@@ -20,11 +20,27 @@ Features
 * check http status codes
 * check multiples urls (one at a time)
 * check if headers/values exists/not exists
-* check if body match a value
-* support regex in all values fields (TODO)
+* check if body match or not a value
+* support regex in all values fields
 * don't follow redirects by default (to test them)
 * override default Go http client User-Agent and timeout
 * debug mode
+
+Help
+====
+
+```
+$ ./headerscheck -help
+Usage of ./headerscheck:
+  -config-file string
+    	Config file (default "config")
+  -debug
+    	Enable debugging output
+  -follow-redirect
+    	Follow redirect (http status codes 30X)
+  -user-agent string
+    	User-Agent used for queries (default "Golang HeadersCheck/0.1 (gui@iroqwa.org)")
+```
 
 How to use
 =========
