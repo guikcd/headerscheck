@@ -29,6 +29,3 @@ jobs:
 
     - name: Test
       run: ./headerscheck -debug
-
-    - name: Test Dockerfile
-      uses: replicated/dockerfilelint:7a7abf6
