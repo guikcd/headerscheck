@@ -152,5 +152,5 @@ func main() {
 
 	}
 
-	log.Println("All scenario executed successfully")
+	log.Println("All scenario executed successfully!")
 }
