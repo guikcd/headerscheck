@@ -1,19 +1,18 @@
 urls:
   iroqwa_http:
-    url: http://www.iroqwa.org/
+    url: http://github.com/
     code: 301
     headers:
-      Location: https://www.iroqwa.org/
+      Location: https://github.com/
   iroqwa_https:
-    url: https://www.iroqwa.org/
+    url: https://github.com/
     code: 200
     headers:
-      X-Powered-By: 4.4.4-8+etch2
-      Server: Microsoft-IIS/6.0
+      Server: GitHub.com
     noheaders:
       X-Cache: none
     body: "<html"
     nobody: "Hacked"
   iroqwa_notfound:
-    url: https://www.iroqwa.org/nonexistent
+    url: https://github.com/nonexistent-7570-5022-4567
     code: 404
