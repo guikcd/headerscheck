@@ -32,4 +32,5 @@ jobs:
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_GO: false # but VALIDATE_GO_MODULES default true
+          VALIDATE_DOCKERFILE_HADOLINT: false # don't want checks for Dockerfile
 ...
