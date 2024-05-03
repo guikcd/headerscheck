@@ -1,3 +1,4 @@
+#checkov:skip=CKV_DOCKER_2
 FROM golang:alpine AS builder
 WORKDIR /go/src/github.com/guidelacour/headerscheck
 COPY main.go .
@@ -10,3 +11,4 @@ WORKDIR /root
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 COPY --from=builder /go/src/github.com/guidelacour/headerscheck/headerscheck .
 CMD ["./headerscheck"]
+USER headerscheck

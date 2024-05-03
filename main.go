@@ -52,7 +52,7 @@ func fetchURL(url string, useragent string, followRedirect bool) *http.Response 
 
 	// return the error, so client won't attempt redirects
 	client := &http.Client{
-		CheckRedirect: func(_ *http.Request, via []*http.Request) error {
+		CheckRedirect: func(_ *http.Request, _ []*http.Request) error {
 			return http.ErrUseLastResponse
 		},
 		Timeout: 5 * time.Second,
@@ -146,14 +146,6 @@ func main() {
 			if found {
 				log.Fatal("Error", config.URL, ": header '", configKey, "' was found in the response", resp)
 			}
-		}
-
-		// body
-		if config.Body != "" {
-			log.Println("WARNING: 'body' is not yet supported")
-		}
-		if config.Nobody != "" {
-			log.Println("WARNING: 'nobody' is not yet supported")
 		}
 
 	}

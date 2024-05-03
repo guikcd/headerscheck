@@ -1,5 +1,6 @@
 name: Go
 on: [push]
+permissions: read-all
 jobs:
 
   build:
