@@ -1,0 +1,5 @@
+linters-settings:
+  gocyclo:
+    # Minimal code complexity to report.
+    # superlinter Default: 15, default 30
+    min-complexity: 30

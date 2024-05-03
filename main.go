@@ -2,12 +2,15 @@ package main
 
 import (
 	"flag"
-	"github.com/spf13/viper"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/spf13/viper"
 )
 
 // UserAgent The http User-Agent used for testing
@@ -49,7 +52,7 @@ func fetchURL(url string, useragent string, followRedirect bool) *http.Response 
 
 	// return the error, so client won't attempt redirects
 	client := &http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+		CheckRedirect: func(_ *http.Request, _ []*http.Request) error {
 			return http.ErrUseLastResponse
 		},
 		Timeout: 5 * time.Second,
@@ -60,7 +63,11 @@ func fetchURL(url string, useragent string, followRedirect bool) *http.Response 
 		}
 	}
 
-	req, _ := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		fmt.Printf("client: could not create request: %s\n", err)
+		os.Exit(1)
+	}
 	req.Header.Set("User-Agent", useragent)
 	resp, err := client.Do(req)
 	if err != nil {
@@ -94,10 +101,9 @@ func main() {
 		// code
 		if config.Code != strconv.Itoa(resp.StatusCode) {
 			log.Fatal("Error: expected status code ", config.Code, " found ", resp.StatusCode)
-		} else {
-			if *debug {
-				log.Println("Code", resp.StatusCode, "match config", config.Code)
-			}
+		}
+		if *debug {
+			log.Println("Code", resp.StatusCode, "match config", config.Code)
 		}
 
 		// headers
@@ -140,14 +146,6 @@ func main() {
 			if found {
 				log.Fatal("Error", config.URL, ": header '", configKey, "' was found in the response", resp)
 			}
-		}
-
-		// body
-		if config.Body != "" {
-			log.Println("WARNING: 'body' is not yet supported")
-		}
-		if config.Nobody != "" {
-			log.Println("WARNING: 'nobody' is not yet supported")
 		}
 
 	}
