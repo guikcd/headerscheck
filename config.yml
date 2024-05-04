@@ -11,6 +11,7 @@ urls:
       Server: GitHub.com
     noheaders:
       X-Cache: none
+    body: Support
   iroqwa_notfound:
     url: https://github.com/nonexistent-7570-5022-4567
     code: 404
