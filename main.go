@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -65,7 +65,7 @@ func fetchURL(url string, useragent string, followRedirect bool) *http.Response 
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		fmt.Printf("client: could not create request: %s\n", err)
+		log.Printf("client: could not create request: %s\n", err)
 		os.Exit(1)
 	}
 	req.Header.Set("User-Agent", useragent)
@@ -148,6 +148,22 @@ func main() {
 			}
 		}
 
+		// body
+		resBody, err := io.ReadAll(resp.Body)
+		if err != nil {
+			log.Printf("client: could not read response body: %s\n", err)
+			os.Exit(1)
+		}
+		if *debug {
+			log.Printf("client: response body: %s\n", resBody)
+		}
+		if strings.Contains(string(resBody[:]), config.Body) {
+			if *debug {
+				log.Println("Body match config: ", config.Body)
+			}
+		} else {
+			log.Fatal("'", config.Body, "' not found in body")
+		}
 	}
 
 	log.Println("All scenario executed successfully!")
